@@ -788,6 +788,74 @@ Proposition~\ref{prop:E_upper} and showing the correct exponent
 from the Pach--Sharir bound is $10/3$, not $8/3$.
 \end{corollary}
 
+\section{The Tempting $k$-Distance Route and Why It Fails}
+\label{app:kdistance_route}
+
+This appendix records a natural attempted proof of Q1 and the exact point
+at which it fails.  It is useful because the attempted route is short,
+algebraically attractive, and wrong for a structural reason rather than a
+minor technical gap.
+
+Let
+\[
+  f_2(k) := \max\{\abs{A} : A \subset \R^2 \text{ has at most } k
+  \text{ distinct distances}\}.
+\]
+
+\begin{proposition}[Conditional reduction]
+\label{prop:conditional_kdist}
+If $f_2(k) \le 2k+1$ held for every $k \ge 1$, then Q1 would follow for
+all planar point sets.
+\end{proposition}
+
+\begin{proof}
+Suppose every realised distance of an $n$-point set $A$ were heavy.
+Let $k := \abs{D(A)}$.  Since each $m_d \ge n+1$,
+\[
+  k(n+1) \le \sum_{d \in D(A)} m_d = \binom{n}{2},
+\]
+so
+\[
+  k \le K(n) := \left\lfloor \frac{n(n-1)}{2(n+1)} \right\rfloor.
+\]
+Under the hypothetical bound $f_2(k) \le 2k+1$, the set $A$ would satisfy
+\[
+  n \le f_2(k) \le 2k+1 \le 2K(n)+1.
+\]
+But $K(n) < (n-1)/2$, hence $2K(n)+1<n$, a contradiction.
+\end{proof}
+
+The algebra in Proposition~\ref{prop:conditional_kdist} is correct.
+The false step is the global bound $f_2(k) \le 2k+1$.
+
+\begin{proposition}[The bound $f_2(k) \le 2k+1$ is false in the plane]
+\label{prop:f2_false}
+There exist planar $k$-distance sets with more than $2k+1$ points.
+Consequently $f_2(k) \le 2k+1$ cannot be used to prove Q1.
+\end{proposition}
+
+\begin{proof}
+Take the $20\times20$ integer grid.  It has $n=400$ points and, by the
+exact computation in Example~\ref{ex:grid_energy}, only $k=179$ distinct
+distances.  But
+\[
+  2k+1 = 2\cdot179+1 = 359 < 400 = n.
+\]
+Thus $f_2(179) \ge 400 > 2\cdot179+1$.
+The $30\times30$ grid gives an even larger instance:
+$n=900$, $k=381$, and $2k+1=763<900$.
+\end{proof}
+
+\begin{remark}[What remains true]
+The inequality $m\le 2k+1$ is true for $m$ points constrained to a
+single circle with at most $k$ chord lengths: order the points by angle;
+the $m-1$ arcs from a fixed point to the others are distinct, while each
+chord length gives at most two oriented arc lengths.  The failure is the
+attempted extension from cocircular sets to arbitrary planar sets.
+General planar $k$-distance sets are much larger: the grid has
+$k=\Theta(n/\sqrt{\log n})$, far below $n/2$.
+\end{remark}
+
 \section{Numerical Computation Script}
 \label{app:code}
 
