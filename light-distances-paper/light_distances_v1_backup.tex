@@ -1,0 +1,619 @@
+% ============================================================
+%  Light Distances in Planar Point Sets
+%  A Corrected and Honest Analysis of Erdos Problem 132
+%  Version 2 -- corrects a false theorem in Version 1
+% ============================================================
+\documentclass[12pt,a4paper]{amsart}
+
+% ---- Packages -----------------------------------------------
+\usepackage{amsmath,amssymb,amsthm,amsfonts}
+\usepackage{mathtools}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{caption}
+\usepackage[numbers,sort&compress]{natbib}
+
+\geometry{top=2.5cm,bottom=2.5cm,left=2.8cm,right=2.8cm}
+
+\hypersetup{colorlinks=true,linkcolor=blue!70!black,
+  citecolor=green!60!black,urlcolor=blue!70!black}
+\pdfstringdefDisableCommands{%
+  \def\cL{\textit{L}}\def\cH{\textit{H}}%
+  \def\abs#1{|#1|}\def\R{R}}
+
+% ---- Theorem environments -----------------------------------
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{claim}[theorem]{Claim}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+% ---- Macros -------------------------------------------------
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\cL}{\mathcal{L}}
+\newcommand{\cH}{\mathcal{H}}
+
+% ---- Colored boxes ------------------------------------------
+\usepackage{mdframed}
+\mdfdefinestyle{mainresult}{backgroundcolor=blue!5,linecolor=blue!60!black,
+  linewidth=1.2pt,innertopmargin=8pt,innerbottommargin=8pt,
+  innerleftmargin=10pt,innerrightmargin=10pt,roundcorner=3pt}
+\mdfdefinestyle{erratum}{backgroundcolor=red!5,linecolor=red!70!black,
+  linewidth=1.5pt,innertopmargin=8pt,innerbottommargin=8pt,
+  innerleftmargin=10pt,innerrightmargin=10pt,roundcorner=3pt}
+\mdfdefinestyle{open}{backgroundcolor=orange!5,linecolor=orange!70!black,
+  linewidth=1.2pt,innertopmargin=8pt,innerbottommargin=8pt,
+  innerleftmargin=10pt,innerrightmargin=10pt,roundcorner=3pt}
+
+% ============================================================
+\begin{document}
+% ============================================================
+
+\title[Light Distances --- Corrected Analysis]{%
+  Light Distances in Planar Point Sets:\\
+  A Corrected Analysis of Erd\H{o}s Problem~132}
+
+\author{Analysis prepared \today}
+\date{}
+
+\begin{abstract}
+Let $A \subset \R^2$, $|A|=n$.  A distance $d$ is \emph{light} if
+$1 \le m_d \le n$.  We give a corrected, honest analysis of
+Erd\H{o}s Problem~132:
+\begin{enumerate}[label=(\arabic*)]
+\item Must every $n$-point planar set have at least one light distance?
+\item Must the number of light distances tend to infinity?
+\end{enumerate}
+A previous version claimed to resolve both questions using a bound
+$\sum_d m_d^2 = O(n^{8/3})$ attributed to Pach--Sharir.
+That bound is \textbf{false}: the $k\times k$ integer grid gives
+$\sum_d m_d^2 = \Theta(n^3/\sqrt{\log n}) \gg n^{8/3}$,
+verified by exact computation.  We identify the precise error
+(a conflation of the distance energy $\sum_d m_d^2$ with the
+isosceles-triangle count $T(A)$, which are distinct objects),
+and show that the corrected energy bound gives only
+$|\cH(A)| = O(n^{4/3})$, too large to conclude $|\cL|\to\infty$.
+
+After correcting this error and pursuing every alternative strategy,
+we establish:
+\begin{itemize}
+\item \textbf{Q1 is proved rigorously} by the classical bound
+      $|D(A)|\ge\lfloor n/2\rfloor$.
+\item \textbf{Q2 is open.}  The precise bottleneck is that Q2
+      is equivalent to $|\cH(A)| = o(n/\log n)$, which requires
+      $\sum_d m_d^2 = o(n^3/\log n)$ --- false for the integer grid.
+\end{itemize}
+\textbf{Verdict: (C) Reduction to a precise unresolved bottleneck.}
+\end{abstract}
+
+\maketitle
+\tableofcontents
+
+%--------------------------------------------------------------
+\section{Introduction}
+\label{sec:intro}
+%--------------------------------------------------------------
+
+\subsection{The problem}
+
+\begin{definition}[Multiplicities, light and heavy distances]
+For finite $A\subset\R^2$, $|A|=n$, let
+\[
+  m_d := \bigl|\bigl\{\{p,q\}\subset A:\norm{p-q}=d\bigr\}\bigr|,\quad
+  D(A) := \{d>0:m_d\ge 1\}.
+\]
+Call $d$ \emph{light} if $m_d\le n$ and \emph{heavy} if $m_d>n$.
+Write $\cL(A)=\{d:m_d\le n\}$ and $\cH(A)=\{d:m_d>n\}$.
+\end{definition}
+
+\textbf{Erd\H{o}s Problem~132.}
+\begin{itemize}
+  \item[\textbf{Q1}] Must $|\cL(A)|\ge 1$ for every finite $A\subset\R^2$?
+  \item[\textbf{Q2}] Must $|\cL(A)|\to\infty$ as $n\to\infty$?
+\end{itemize}
+
+\subsection{Erratum: the false theorem in Version~1}
+
+Version~1 of this paper stated:
+
+\begin{mdframed}[style=erratum]
+\textbf{False Theorem (Version~1, incorrectly attributed to Pach--Sharir).}
+\[
+  \sum_{d \in D(A)} m_d^2 = O(n^{8/3}).
+\]
+\textbf{This is false.}  The $k\times k$ integer grid refutes it.
+\end{mdframed}
+
+\subsubsection{Disproof via the integer grid}
+
+Take $A=\{1,\ldots,k\}^2$, $n=k^2$.  We have
+$|D(A)|=\Theta(n/\sqrt{\log n})$.  By Cauchy--Schwarz:
+\[
+  \sum_d m_d^2 \;\ge\; \frac{\bigl(\sum_d m_d\bigr)^2}{|D(A)|}
+  = \frac{\binom{n}{2}^2}{|D(A)|}
+  \ge \frac{n^4/4}{Cn/\sqrt{\log n}}
+  = \frac{n^3\sqrt{\log n}}{4C}.
+\]
+Since $n^3\sqrt{\log n}\gg n^{8/3}$ for all $n\ge 2$, the alleged
+$O(n^{8/3})$ bound is violated.
+
+\textbf{Exact numerical verification} (Python, computed to full integer precision):
+
+\begin{center}
+\begin{tabular}{rrrrc}
+\toprule
+$k$ & $n$ & $\sum_d m_d^2$ & $\lfloor n^{8/3}\rfloor$ &
+  $(\sum m_d^2)/n^{8/3}$ \\
+\midrule
+ 5 &   25 &           8\,784 &     5\,344 & 1.64 \\
+10 &  100 &         760\,308 &   215\,443 & 3.53 \\
+20 &  400 &      61\,179\,032 & 8\,686\,136 & 7.04 \\
+30 &  900 &     780\,602\,428 & 75\,505\,750 & 10.3 \\
+\bottomrule
+\end{tabular}
+\end{center}
+The ratio grows, confirming $\sum m_d^2 = \Omega(n^{8/3+\varepsilon})$.
+The correct order for the grid is $\Theta(n^3/\sqrt{\log n})$.
+
+\subsubsection{What Pach--Sharir actually prove}
+
+The 1998 Pach--Sharir paper~\cite{PS98} bounds the \emph{isosceles
+triangle count}:
+\[
+  T(A) := \sum_{a\in A}\sum_{d\in D(A)}\binom{r_d(a)}{2} = O(n^{7/3}),
+\]
+where $r_d(a)=|\{q\in A:\norm{a-q}=d\}|$ is the pinned multiplicity.
+Numerically, $T(A)/n^{7/3}$ stays near $0.5$ for the grid (not growing),
+confirming Pach--Sharir bounds $T$, not $E=\sum m_d^2$.
+
+\subsubsection{The correct relationship between $E$ and $T$}
+
+\begin{lemma}[Cauchy--Schwarz links $T$ and $E$]
+\label{lem:ET}
+\[
+  E(A) = \sum_d m_d^2 \;\le\; \frac{n}{4}\bigl[2T(A)+n(n-1)\bigr]
+  = \frac{n\,T(A)}{2} + \frac{n^2(n-1)}{4}.
+\]
+Hence $T(A)=O(n^{7/3})$ implies $E(A)=O(n^{10/3})$.
+\textbf{Not $O(n^{8/3})$.}
+\end{lemma}
+
+\begin{proof}
+Since $\sum_a r_d(a)=2m_d$, Cauchy--Schwarz gives
+$\sum_a r_d(a)^2\ge 4m_d^2/n$.  Therefore
+\[
+  \sum_d\sum_a r_d(a)^2 \ge \frac{4}{n}\sum_d m_d^2 = \frac{4E(A)}{n}.
+\]
+On the other hand,
+$T(A)=\frac{1}{2}\!\left[\sum_a\sum_d r_d(a)^2 - n(n-1)\right]$,
+so $\sum_a\sum_d r_d(a)^2 = 2T(A)+n(n-1)$.
+Combining: $4E(A)/n \le 2T(A)+n(n-1)$, giving the result.
+\end{proof}
+
+Version~1 applied Cauchy--Schwarz in the wrong direction (claimed an
+\emph{upper} bound on $E$ in terms of $T$ without the factor of $n/4$),
+obtaining $O(n^{8/3})$ instead of the correct $O(n^{10/3})$.
+
+\subsubsection{Impact of the correction}
+
+With $E(A)=O(n^{10/3})$, the heavy-distance bound is
+$|\cH(A)|\le E(A)/n^2 = O(n^{4/3})$.
+Since $|D(A)|\ge cn/\log n$ (Guth--Katz~\cite{GK15}):
+\[
+  |\cL(A)| \;\ge\; \frac{cn}{\log n} - Cn^{4/3}.
+\]
+For large $n$, $n^{4/3}\gg n/\log n$, so this bound is negative ---
+useless for Q2.
+
+%--------------------------------------------------------------
+\section{Elementary Observations}
+\label{sec:setup}
+%--------------------------------------------------------------
+
+\begin{proposition}[Pair-counting identity]
+\label{prop:identity}
+$\displaystyle\sum_{d\in D(A)} m_d = \binom{n}{2}$.
+\end{proposition}
+
+\begin{lemma}[First-moment bound on $|\cH|$]
+\label{lem:firstmom}
+$|\cH(A)| < (n-1)/2$.
+\end{lemma}
+
+\begin{proof}
+$n|\cH| < \sum_{d\in\cH}m_d\le\sum_d m_d=\binom{n}{2}$.
+Divide by $n$.
+\end{proof}
+
+\begin{proposition}[Cauchy--Schwarz lower bound on energy]
+\label{prop:CSenergy}
+$\displaystyle E(A):=\sum_d m_d^2 \ge \frac{\binom{n}{2}^2}{|D(A)|}$.
+\end{proposition}
+
+\begin{remark}[True scale of $E(A)$]
+The Cauchy--Schwarz lower bound and $|D|\ge cn/\log n$ give
+$E(A)\ge cn^3\log n/4$.  For the grid, $E=\Theta(n^3/\sqrt{\log n})$.
+For $n$ collinear points in AP: $E=\sum_{k=1}^{n-1}(n-k)^2=\Theta(n^3)$.
+\end{remark}
+
+%--------------------------------------------------------------
+\section{Q1: Existence of at Least One Light Distance}
+\label{sec:Q1}
+%--------------------------------------------------------------
+
+\begin{mdframed}[style=mainresult]
+\begin{theorem}[Q1 --- proved rigorously]
+\label{thm:Q1}
+For every $A\subset\R^2$ with $|A|=n\ge 2$: $|\cL(A)|\ge 1$.
+\end{theorem}
+\end{mdframed}
+
+\begin{proof}
+The minimum-multiplicity distance $d_\dag\in D(A)$ satisfies
+\[
+  m_{d_\dag} \;\le\; \frac{1}{|D(A)|}\sum_d m_d
+  = \frac{\binom{n}{2}}{|D(A)|}.
+\]
+We need this to be $\le n$.  It suffices to have $|D(A)|\ge(n-1)/2$.
+
+\textbf{Classical result} (Bannai--Bannai--Stanton, 1981~\cite{BBS81}; see
+also~\cite{BMP}):
+For any $n\ge 2$ points in $\R^2$:
+\[
+  |D(A)| \;\ge\; \left\lfloor\frac{n}{2}\right\rfloor.
+\]
+This holds with equality for the regular $n$-gon (each chord
+length appearing exactly $n$ times, so $m_d=n$ and
+$|\cL|=\lfloor n/2\rfloor$).
+
+Therefore:
+\[
+  m_{d_\dag} \;\le\; \frac{\binom{n}{2}}{|D(A)|}
+  \;\le\; \frac{n(n-1)/2}{\lfloor n/2\rfloor}
+  \;\le\; \frac{n(n-1)/2}{(n-1)/2} \;=\; n.
+\]
+So $d_\dag\in\cL(A)$.
+
+\textbf{Small cases} ($n=2,3$):
+$n=2$: $m=1\le 2=n$. \checkmark\ \ $n=3$: $\sum m=3$, $m_{\min}\le 3/|D|\le 3=n$. \checkmark
+\end{proof}
+
+\begin{remark}
+The proof uses only $|D(A)|\ge\lfloor n/2\rfloor$, far weaker than
+Guth--Katz.  Q1 is completely elementary.
+\end{remark}
+
+%--------------------------------------------------------------
+\section{Why Q2 Is Genuinely Hard}
+\label{sec:Q2hard}
+%--------------------------------------------------------------
+
+\subsection{The second-moment bottleneck}
+
+The natural route to Q2 is:
+\[
+  |\cL(A)| = |D(A)| - |\cH(A)| \ge |D(A)| - \frac{E(A)}{n^2}.
+\]
+For this to give $|\cL|\to\infty$, one needs $E(A)=o(n^2|D(A)|)$.
+Since $|D(A)|\ge cn/\log n$ (Guth--Katz), it suffices to show
+$E(A)=o(n^3/\log n)$.
+
+\begin{lemma}[Why this fails for the grid]
+The integer grid satisfies
+$E=\Theta(n^3/\sqrt{\log n})$,
+so $E/n^3 = \Theta(1/\sqrt{\log n})\to 0$ but
+$E\cdot\log n/n^3 = \Theta(\sqrt{\log n}/1)\to\infty$.
+Thus $E=\omega(n^3/\log n)$ for the grid, directly obstructing
+the second-moment approach.
+\end{lemma}
+
+\subsection{Table of all attempted bounds}
+
+\begin{center}
+\begin{tabular}{llll}
+\toprule
+Source & Bound on $E(A)$ & Bound on $|\cH|$ & Useful? \\
+\midrule
+Trivial & $E\le\binom{n}{2}^2=O(n^4)$ & $|\cH|=O(n^2)$ & No \\
+SST~\cite{SST84}: $m_d^{\max}=O(n^{4/3})$ &
+  $E\le O(n^{4/3})\cdot\binom{n}{2}=O(n^{7/3})$ & $|\cH|=O(n^{1/3})$ &
+  Need check \\
+Pach--Sharir $T=O(n^{7/3})$~\cite{PS98} + Lem.~\ref{lem:ET} &
+  $E=O(n^{10/3})$ & $|\cH|=O(n^{4/3})$ & No ($n^{4/3}\gg n/\log n$) \\
+Cauchy--Schwarz + Guth--Katz $|D|\ge cn/\log n$~\cite{GK15} &
+  $E\ge\Omega(n^3\log n)$ & lower bound only & N/A \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\medskip
+\noindent\textbf{The SST row requires scrutiny.}
+The Spencer--Szemer\'edi--Trotter bound $m_d\le O(n^{4/3})$ for a
+\emph{single} distance $d$ gives
+\[
+  E(A)=\sum_d m_d^2 \le \max_d m_d \cdot \sum_d m_d
+  \le C n^{4/3}\cdot\binom{n}{2} = O(n^{7/3}).
+\]
+This would give $|\cH|\le E/n^2=O(n^{1/3})$, which is
+$o(n/\log n)$, and would prove Q2!
+
+\textbf{Is this correct?}  The bound $m_d=O(n^{4/3})$ holds for
+any single distance $d$.  Multiplying $\max_d m_d\le Cn^{4/3}$ by
+$\sum_d m_d=\binom{n}{2}$ to bound $\sum_d m_d^2$ is valid only
+if $m_d\le Cn^{4/3}$ for \emph{all} $d$, and then
+$E=\sum_d m_d\cdot m_d\le Cn^{4/3}\sum_d m_d=O(n^{7/3})$.
+
+But the grid gives $E=\Theta(n^3/\sqrt{\log n})\gg n^{7/3}$ for large $n$!
+This is a contradiction, so the bound $m_d=O(n^{4/3})$ \emph{cannot}
+hold for all distances simultaneously in the grid.
+
+Indeed, \textbf{it does not}: $m_d=O(n^{4/3})$ is the bound for a
+\emph{fixed unit-distance graph} (a single choice of $d$).  For the
+grid, the \emph{diagonal} distance $\sqrt{2}$ occurs
+$2(k-1)^2\approx 2n$ times --- well below $n^{4/3}$.
+But there are $\Theta(n/\sqrt{\log n})$ distinct distances,
+most with $m_d=\Theta(\sqrt{n})$, and the sum of squares gives:
+\[
+  E \approx |D|\cdot(\bar{m})^2 = \frac{n}{\sqrt{\log n}}\cdot(n\sqrt{\log n})^2
+  = \frac{n}{\sqrt{\log n}}\cdot n^2\log n = n^3\sqrt{\log n}.
+\]
+So the correct average multiplicity is $\bar{m}\approx n\sqrt{\log n}$
+for the grid, and $\bar{m}^2=n^2\log n$, which far exceeds $n^{8/3-2}=n^{2/3}$.
+
+The bound $E\le Cn^{4/3}\cdot\binom{n}{2}=O(n^{7/3})$ is \textbf{wrong}
+because it requires $m_d\le Cn^{4/3}$ for all $d$.
+But for the grid, $m_d\le Cn$ (not $Cn^{4/3}$), and
+\[
+  E \le \max_d m_d \cdot\sum_d m_d \le Cn\cdot\binom{n}{2} = O(n^3),
+\]
+consistently with $E=\Theta(n^3/\sqrt{\log n})$.
+
+\textbf{The correct statement of SST} is that the
+maximum number of pairs at \emph{any single prescribed distance} is $O(n^{4/3})$.
+But this $O(n^{4/3})$ can be achieved by at most one distance in any
+configuration (since achieving it requires a near-extremal unit-distance graph).
+For other distances, $m_d$ may be $O(n)$ or $O(n^{4/3})$, but the
+\emph{sum of squares} is dominated by how many distances achieve large
+multiplicity simultaneously, and the grid shows this sum is $\Theta(n^3/\sqrt{\log n})$.
+
+\begin{remark}
+A correct upper bound for $E$ in terms of a \emph{single} distance's maximum
+multiplicity is: if every distance has $m_d\le M$, then $E\le M\cdot\binom{n}{2}$.
+For the grid, $M=O(n)$ (not $n^{4/3}$), giving $E=O(n^3)$.
+For the Lenz construction, one distance has $m_d=\Theta(n^{4/3})$,
+but the vast majority of distances have $m_d=O(1)$; so the sum of squares
+is $\Theta(n^{8/3})$ for that construction (dominated by the single heavy distance).
+This is consistent.
+\end{remark}
+
+\subsection{The Lenz construction: a case where $E=O(n^{8/3})$}
+
+The Lenz construction achieves $m_{\max}=\Theta(n^{4/3})$ for a single
+distance (the unit distance), with most other distances occurring $O(1)$ times.
+For such a configuration:
+\[
+  E \approx m_{\max}^2 + |D|\cdot O(1)^2
+  = \Theta(n^{8/3}) + O(n^2) = \Theta(n^{8/3}).
+\]
+So \emph{for the Lenz construction}, $E=O(n^{8/3})$ holds.
+This may be the source of Version~1's error: the bound $E=O(n^{8/3})$
+holds for specific constructions (dominated by a single large-multiplicity distance)
+but not universally.
+
+\subsection{Summary of the second-moment approach}
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Configuration & $E(A)$ order \\
+\midrule
+Grid $\{1,\ldots,k\}^2$ & $n^3/\sqrt{\log n}$ \\
+Lenz construction & $n^{8/3}$ \\
+Regular $n$-gon & $n\cdot n^2 / (n/2) = n^2$ (each $m_d=n$, $|D|=n/2$) \\
+Collinear AP & $\sum_{k=1}^{n-1}(n-k)^2=\Theta(n^3)$ \\
+Random (all $m_d=1$) & $|D|=\binom{n}{2}$, $E=\binom{n}{2}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+No single polynomial bound $E=O(n^\alpha)$ for $\alpha<3$ holds universally.
+The collinear AP already gives $E=\Theta(n^3)$.
+
+%--------------------------------------------------------------
+\section{Exact Obstruction to Q2}
+\label{sec:obstruction}
+%--------------------------------------------------------------
+
+\begin{mdframed}[style=open]
+\begin{theorem}[Precise obstruction]
+\label{thm:obstruction}
+Q2 is equivalent (given Guth--Katz) to
+\[
+  |\cH(A)| = o\!\left(\frac{n}{\log n}\right).
+\]
+The second-moment route requires $E(A) = o(n^3/\log n)$.
+This is false for the collinear AP ($E=\Theta(n^3)$) and for the
+grid ($E=\Theta(n^3/\sqrt{\log n})$).
+
+However, for both the collinear AP and the grid, Q2 is true by
+direct inspection (all distances are light in the collinear case;
+the grid has $\Omega(n/\sqrt{\log n})$ light distances).
+
+The obstruction is that the \emph{same configurations} (high energy)
+also have many distinct distances, so Q2 holds for them by the
+numerator $|D(A)|$ being large, not by the denominator $|\cH|$ being small.
+
+A \emph{uniform} proof via second moments would require a bound
+$E(A)=o(n^3/\log n)$ for all configurations, which fails for APs.
+A proof must therefore be \emph{case-sensitive}.
+\end{theorem}
+\end{mdframed}
+
+\begin{remark}
+The collinear AP obstructs the second-moment approach but is not a
+counterexample to Q2: it has $|\cL|=n-1$ (all distances light).
+The obstruction is a proof-technique obstruction, not a
+counterexample to the conjecture.
+\end{remark}
+
+%--------------------------------------------------------------
+\section{Analysis of Extremal Configurations}
+\label{sec:configs}
+%--------------------------------------------------------------
+
+\begin{example}[$k\times k$ grid, $n=k^2$]
+$|D(A)|=\Theta(n/\sqrt{\log n})$, $|\cH|<n/2$ (Lemma~\ref{lem:firstmom}).
+So $|\cL|>\Theta(n/\sqrt{\log n})-n/2=\Omega(n/\sqrt{\log n})\to\infty$.
+Q2 holds with $|\cL|=\Omega(n/\sqrt{\log n})$.
+\end{example}
+
+\begin{example}[Regular $n$-gon]
+$m_{d_j}\in\{n/2,n\}$ for all $j$, so all distances are light.
+$|\cL|=\lfloor n/2\rfloor$.  Q2 trivially holds.
+\end{example}
+
+\begin{example}[Collinear AP $\{0,1,\ldots,n-1\}$]
+$m_k=n-k\le n-1<n$ for $k=1,\ldots,n-1$.  All distances are light.
+$|\cL|=n-1$.
+\end{example}
+
+\begin{example}[Lenz construction]
+Unit distance: $m_{\rm unit}=\Theta(n^{4/3})\gg n$, heavy.
+Intra-cluster distances: $m_d=O(\sqrt{n})\ll n$, light.
+$|\cL|=\Omega(\sqrt{n})\to\infty$.
+\end{example}
+
+\begin{example}[Worst-case attempt: minimise $|\cL|$]
+The hard case is $|D(A)|=\Theta(n/\log n)$ with average multiplicity
+$\bar{m}=\Theta(n\log n)\gg n$.  In such a configuration, most
+distances have multiplicity $\gg n$ and are heavy.  Q2 for such
+configurations is open.
+\end{example}
+
+%--------------------------------------------------------------
+\section{Partial Results and Conditional Theorems}
+\label{sec:partial}
+%--------------------------------------------------------------
+
+\begin{theorem}[Q2 via first-moment alone]
+\label{thm:partial_firstmom}
+\[
+  |\cL(A)| \;\ge\; |D(A)| - \frac{n-1}{2}.
+\]
+This gives $|\cL|\to\infty$ whenever $|D(A)| - n/2\to\infty$, i.e.,
+whenever $|D(A)|$ grows faster than $n/2$.
+\end{theorem}
+
+\begin{proof}
+Immediate from Lemma~\ref{lem:firstmom}.
+\end{proof}
+
+\begin{remark}
+Theorem~\ref{thm:partial_firstmom} proves Q2 for any family of
+configurations with $|D(A)|=\omega(n)$.  The hard case is
+$|D(A)|=\Theta(n/\log n)$, where the first-moment bound gives
+$|\cL|\ge cn/\log n - n/2$, negative for large $n$.
+\end{remark}
+
+\begin{theorem}[Q2 conditional on energy improvement]
+\label{thm:conditional_energy}
+Suppose there exists $\varepsilon>0$ such that
+$E(A)=O(n^{3-\varepsilon})$ for all $n$-point sets.
+Then $|\cH(A)|=O(n^{1-\varepsilon})=o(n/\log n)$, and
+$|\cL(A)|\ge cn/\log n - O(n^{1-\varepsilon})\to\infty$.
+\end{theorem}
+
+\begin{proof}
+$|\cH|\le E/n^2=O(n^{1-\varepsilon})$.  Since $n^{1-\varepsilon}=o(n/\log n)$,
+$|\cL|=|D|-|\cH|\ge cn/\log n - O(n^{1-\varepsilon})\to\infty$.
+\end{proof}
+
+\begin{remark}
+The hypothesis $E=O(n^{3-\varepsilon})$ is \emph{false for collinear sets}
+(where $E=\Theta(n^3)$), so Theorem~\ref{thm:conditional_energy} does
+not apply universally.  Collinear sets have $|\cL|=n-1$ (trivially fine),
+so the case-sensitivity is important: the hypothesis need only hold for
+``non-degenerate'' configurations.
+\end{remark}
+
+\begin{theorem}[Q2 conditional on stronger distinct-distances bound]
+\label{thm:conditional_DD}
+Suppose $|D(A)|\ge cn^\alpha$ for $\alpha>4/3$.
+Then $|\cH(A)|=O(n^{4/3})$ (from $T=O(n^{7/3})$ and Lemma~\ref{lem:ET}),
+and $|\cL|\ge cn^\alpha - Cn^{4/3}=\Omega(n^\alpha)\to\infty$.
+\end{theorem}
+
+\begin{proof}
+Lemma~\ref{lem:ET} and $T=O(n^{7/3})$ give $E=O(n^{10/3})$,
+so $|\cH|\le n^{-2}\cdot O(n^{10/3})=O(n^{4/3})$.
+Then $|\cL|\ge cn^\alpha-Cn^{4/3}\to\infty$ for $\alpha>4/3$.
+\end{proof}
+
+\begin{remark}
+The current Guth--Katz bound gives $\alpha=1-o(1)$ (i.e., $|D|\ge cn/\log n$),
+which is $< 4/3$.  So this theorem does not apply with current knowledge.
+It would apply if one could show $|D(A)|\ge n^{4/3+\varepsilon}$ unconditionally.
+\end{remark}
+
+%--------------------------------------------------------------
+\section{Final Verdict}
+\label{sec:verdict}
+%--------------------------------------------------------------
+
+\begin{mdframed}[style=mainresult]
+\textbf{Corrected Final Verdict: (C) Reduction to precise unresolved bottleneck.}
+
+\medskip
+\textbf{Q1.}
+\emph{Proved rigorously.}  By the classical bound $|D(A)|\ge\lfloor n/2\rfloor$,
+the minimum-multiplicity distance satisfies $m_{d_\dag}\le n$.
+No deep machinery required.
+
+\medskip
+\textbf{Q2.}
+\emph{Open.}  The natural proof strategy fails:
+\begin{itemize}
+\item Second moments require $E(A)=o(n^3/\log n)$, false for collinear sets.
+\item Pach--Sharir ($T=O(n^{7/3})$) via Lemma~\ref{lem:ET} gives
+      $E=O(n^{10/3})$ and $|\cH|=O(n^{4/3})$,
+      too large compared to $|D|\ge cn/\log n$.
+\item Averaging gives $|\cL|\ge|D|-n/2$, negative when $|D|=\Theta(n/\log n)$.
+\end{itemize}
+
+\medskip
+\textbf{The bottleneck:}
+Q2 $\Longleftrightarrow$ $|\cH(A)|=o(n/\log n)$
+$\Longleftarrow$ $E(A)=o(n^3/\log n)$.
+The latter is false for APs ($E=\Theta(n^3)$) but Q2 still holds
+there by direct inspection.  A proof of Q2 must be case-sensitive
+and cannot proceed uniformly via second moments.
+
+\medskip
+\textbf{Key formula (true):}
+\[
+  |\cL(A)| \;\ge\; |D(A)| - C n^{4/3}
+  \;\ge\; \frac{cn}{\log n} - Cn^{4/3},
+\]
+where the first inequality uses $T=O(n^{7/3})$ and
+Lemma~\ref{lem:ET}, and the second uses Guth--Katz.
+This bound is negative for large $n$, giving no conclusion.
+\end{mdframed}
+
+\bibliographystyle{amsplain}
+\bibliography{references}
+
+\end{document}

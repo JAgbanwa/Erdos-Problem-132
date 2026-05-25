@@ -1,4 +1,6 @@
-% ============================================================
+import sys
+
+content = r"""% ============================================================
 %  Light Distances in Planar Point Sets
 %  Corrected and Complete Analysis of Erdos Problem 132
 %  Revision: full correction of prior false Pach--Sharir claim
@@ -23,7 +25,9 @@
 
 \hypersetup{colorlinks=true,linkcolor=blue!70!black,
             citecolor=green!60!black,urlcolor=blue!70!black}
-\pdfstringdefDisableCommands{\def\H#1{#1}\def\h#1{#1}}
+\pdfstringdefDisableCommands{%
+  \def\cL{\textit{L}}\def\cH{\textit{H}}\def\abs#1{|#1|}%
+  \def\Omega#1{Omega}\def\le{<=}\def\ge{>=}\def\R{R}\def\log{log}}
 
 % ---- Theorem environments -----------------------------------
 \theoremstyle{plain}
@@ -818,3 +822,8 @@ for k in [5, 8, 10, 15, 20, 25, 30]:
 \bibliography{references}
 
 \end{document}
+"""
+
+with open("/Users/jamalmac/Erdos-Problem-132/light-distances-paper/light_distances.tex", "w") as f:
+    f.write(content)
+print("Written successfully. Lines:", content.count('\n'))
