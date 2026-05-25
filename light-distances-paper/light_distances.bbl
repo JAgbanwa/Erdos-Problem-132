@@ -1,0 +1,41 @@
+\providecommand{\bysame}{\leavevmode\hbox to3em{\hrulefill}\thinspace}
+\providecommand{\MR}{\relax\ifhmode\unskip\space\fi MR }
+% \MRhref is called by the amsart/book/proc definition of \MR.
+\providecommand{\MRhref}[2]{%
+  \href{http://www.ams.org/mathscinet-getitem?mr=#1}{#2}
+}
+\providecommand{\href}[2]{#2}
+\begin{thebibliography}{1}
+
+\bibitem{Einhorn1966}
+S.~J. Einhorn and I.~J. Schoenberg, \emph{On {E}uclidean sets having only two
+  distances between points {I}, {II}}, Ned.\ Akad.\ Wetensch.\ Proc.\ Ser.\ A
+  \textbf{69} (1966), 479--504.
+
+\bibitem{Erdos1946}
+Paul Erd\H{o}s, \emph{On sets of distances of $n$ points}, Amer.\ Math.\
+  Monthly \textbf{53} (1946), 248--250.
+
+\bibitem{GK15}
+Larry Guth and Nets~Hawk Katz, \emph{On the {E}rd\h{o}s distinct distances
+  problem in the plane}, Ann.\ of Math.\ (2) \textbf{181} (2015), no.~1,
+  155--190.
+
+\bibitem{Moser1952}
+William Moser, \emph{On the number of ordinary lines determined by $n$ points},
+  Canad.\ J.\ Math. \textbf{10} (1958), 210--219.
+
+\bibitem{PS98}
+J{\'a}nos Pach and Micha Sharir, \emph{Repeated distances in space},
+  Combinatorica \textbf{18} (1998), no.~1, 123--133.
+
+\bibitem{SST84}
+Joel Spencer, Endre Szemer{\'e}di, and William~T. Trotter, \emph{Unit distances
+  in the {E}uclidean plane}, Graph Theory and Combinatorics (B{\'e}la
+  Bollob{\'a}s, ed.), Academic Press, 1984, pp.~293--303.
+
+\bibitem{ST83}
+Endre Szemer{\'e}di and William~T. Trotter, \emph{Extremal problems in discrete
+  geometry}, Combinatorica \textbf{3} (1983), no.~3--4, 381--392.
+
+\end{thebibliography}
