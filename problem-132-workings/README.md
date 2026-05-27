@@ -29,11 +29,11 @@ Then heavy classes satisfy $m_d>n$, and
 \]
 So:
 
-- Q1 becomes: is \(L\ge 2\)?
-- Q2 becomes: does \(L\to\infty\) as \(n\to\infty\)?
+- Q1 becomes: is $L\ge 2$?
+- Q2 becomes: does $L\to\infty$ as $n\to\infty$?
 
-Graph language: each distance value \(d\) gives a distance graph \(G_d\) on \(A\), with \(|E(G_d)|=m_d\).  
-Light distances are exactly those with at most \(n\) edges.
+Graph language: each distance value $d$ gives a distance graph $G_d$ on $A$, with $|E(G_d)|=m_d$.  
+Light distances are exactly those with at most $n$ edges.
 
 ---
 
