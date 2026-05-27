@@ -1,0 +1,141 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{hyperref}
+
+\title{Workings and Solution Notes for Erd\H{o}s Problem 132}
+\author{}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Problem statement}
+
+Let \(A\subset \mathbb{R}^2\), \(|A|=n\). For each realized distance value \(d>0\), define
+\[
+m_d := \#\{\{a,b\}\subset A: |a-b|=d\}.
+\]
+Define \emph{light distances} by \(1\le m_d\le n\).
+
+Questions:
+\begin{enumerate}
+  \item Must there exist two distinct light distances?
+  \item Must the number of light distances tend to infinity with \(n\)?
+\end{enumerate}
+
+\section*{Stage 1: Reformulation}
+
+Set
+\[
+P := \binom n2,\qquad D:=\#\{d:m_d>0\},\qquad
+L:=\#\{d:1\le m_d\le n\},\qquad H:=D-L.
+\]
+Then heavy classes satisfy \(m_d>n\), and
+\[
+\sum_d m_d = P.
+\]
+Hence:
+\begin{itemize}
+  \item Q1 becomes: is \(L\ge 2\)?
+  \item Q2 becomes: does \(L\to\infty\) as \(n\to\infty\)?
+\end{itemize}
+
+Graph language: each distance value \(d\) defines a graph \(G_d\) on \(A\), with \(|E(G_d)|=m_d\). Light distances are exactly classes with at most \(n\) edges.
+
+\section*{Stage 2: Immediate inequalities}
+
+From \(\sum_d m_d=P\):
+\begin{itemize}
+  \item Since each heavy class contributes \(>n\), one has
+  \[
+  P>nH\;\Rightarrow\; H<\frac{P}{n}=\frac{n-1}{2}.
+  \]
+  \item Therefore
+  \[
+  L=D-H\ge D-\frac{n-1}{2}.
+  \]
+\end{itemize}
+
+Combining only with Guth--Katz \(D\gtrsim n/\log n\) gives
+\[
+L\gtrsim \frac{n}{\log n}-\frac n2,
+\]
+which is asymptotically non-informative for positivity.
+
+\section*{Stage 3: Consequences of known bounds}
+
+\subsection*{3.1 One unconditional light distance}
+Let \(\Delta\) be the diameter of \(A\). The diameter graph in \(\mathbb R^2\) has at most \(n\) edges (Hopf--Pannwitz / Vazsonyi), so
+\[
+m_\Delta\le n.
+\]
+Hence \(L\ge 1\) for every \(n\ge 2\).
+
+\subsection*{3.2 Maximum multiplicity does not force many light classes}
+If \(M:=\max_d m_d\), then by unit-distance type bounds \(M\lesssim n^{4/3}\). Thus
+\[
+D\ge \frac{P}{M}\gtrsim n^{2/3},
+\]
+still too weak to force \(L\ge 2\) or \(L\to\infty\).
+
+\subsection*{3.3 Energy bounds remain compatible with few light classes}
+Let \(E_2:=\sum_d m_d^2\). Known upper bounds of order \(n^3\log n\), together with Cauchy lower bound \(E_2\ge P^2/D\), do not exclude spectra where most classes lie near or above \(n\).
+
+\section*{Stage 4: Canonical constructions}
+
+\begin{itemize}
+  \item Regular \(n\)-gon: many classes with multiplicity \(\le n\), so many light distances.
+  \item Square lattice \(N\times N\), \(n=N^2\): at least \(\Omega(N)=\Omega(\sqrt n)\) light classes from boundary-related displacement vectors.
+  \item Triangular lattice patches: analogous behavior, many light classes.
+  \item Cartesian products / parallel-line constructions: many classes with multiplicity \(O(n)\), frequently \(\le n\).
+  \item Circle-heavy constructions: regular/near-regular placements still provide many light chord classes.
+  \item Random sets: almost surely all pair distances distinct, so \(L=P=\Theta(n^2)\).
+\end{itemize}
+
+No canonical family produces bounded \(L\).
+
+\section*{Stage 5: Contradiction attempt from \(L\le 1\)}
+
+Assume \(L\le 1\). Then at least \(D-1\) classes are heavy:
+\[
+P=\sum_d m_d \ge 1 + (D-1)(n+1),
+\]
+hence
+\[
+D \le \frac{P-1}{n+1}+1 = \frac n2 + O(1).
+\]
+This is compatible with known lower bounds \(D\gtrsim n/\log n\). Energy bounds also remain compatible.
+
+\section*{Stage 6: Attempt toward \(L\to\infty\)}
+
+Dyadic decomposition
+\[
+S_j=\{d:2^jn < m_d \le 2^{j+1}n\}
+\]
+combined with incidence machinery controls only very rich classes and yields at best \(O(n)\)-scale bounds for heavy classes overall. This still does not force \(L\to\infty\).
+
+\section*{Stage 7: Obstruction and partial theorems}
+
+\begin{itemize}
+  \item Proven: \(L\ge 1\) for all \(n\ge 2\) (diameter argument).
+  \item Missing ingredient: strong control on the near-threshold band \(m_d\asymp n\), not just high-multiplicity tails.
+\end{itemize}
+
+\section*{Stage 8: Final verdict}
+
+\begin{enumerate}
+  \item \textbf{Literal universal Q1 is false.} For \(n=3\), an equilateral triangle has one distance value \(d\) with \(m_d=3=n\), so \(L=1\), not \(2\).
+  \item \textbf{Asymptotic questions remain unresolved by current standard tools.} Present bounds do not force either eventual \(L\ge 2\) or \(L\to\infty\).
+\end{enumerate}
+
+Thus the strongest justified conclusion is:
+\begin{itemize}
+  \item always at least one light distance,
+  \item two-light-distance claim fails in finite full generality,
+  \item asymptotic growth of light distances is open under currently available machinery.
+\end{itemize}
+
+\end{document}
