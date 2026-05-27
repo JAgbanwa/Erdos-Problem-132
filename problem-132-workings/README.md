@@ -5,7 +5,7 @@
 Let $A\subset \mathbb{R}^2\), \(|A|=n$.  
 For each realized distance value $d>0$, let
 
-$m_d := \#\{\{a,b\}\subset A: |a-b|=d\}$.
+$m_d := \\#\{\{a,b\}\subset A: |a-b|=d\}$.
 
 Define **light distances** by $1\le m_d\le n$.
 
