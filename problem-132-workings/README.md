@@ -2,12 +2,12 @@
 
 ## Problem statement
 
-Let \(A\subset \mathbb{R}^2\), \(|A|=n\).  
-For each realized distance value \(d>0\), let
-\[
-m_d := \#\{\{a,b\}\subset A: |a-b|=d\}.
-\]
-Define **light distances** by \(1\le m_d\le n\).
+Let $A\subset \mathbb{R}^2\), \(|A|=n$.  
+For each realized distance value $d>0$, let
+
+$m_d := \#\{\{a,b\}\subset A: |a-b|=d\}$.
+
+Define **light distances** by $1\le m_d\le n$.
 
 Questions:
 
@@ -23,7 +23,7 @@ Let
 P := \binom n2,\qquad D:=\#\{d:m_d>0\},\qquad
 L:=\#\{d:1\le m_d\le n\},\qquad H:=D-L.
 \]
-Then heavy classes satisfy \(m_d>n\), and
+Then heavy classes satisfy $m_d>n$, and
 \[
 \sum_d m_d = P.
 \]
